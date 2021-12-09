@@ -3,5 +3,7 @@
         "activityBar.background": "#25302E",
         "titleBar.activeBackground": "#334340",
         "titleBar.activeForeground": "#F9FAFA"
-    }
+    },
+
+    "dotnet-test-explorer.testProjectPath": "**/*Tests.@(csproj|vbproj|fsproj)"
 }
