@@ -1,5 +1,10 @@
 using Microsoft.EntityFrameworkCore;
 
+using DI_EFCore.Models;
+
+using DI_EFCore.Interfaces.Repositories;
+using DI_EFCore.Repositories;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -9,16 +14,18 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IPostRepository, PostRepository>();
+
 var connectionString = builder.Configuration.GetConnectionString("Main");
 var serverVersion = new MySqlServerVersion(new Version(8, 0, 25));
 
-builder.Services.AddDbContext<DI_EFCore.Models.AppDbContext>(options => options.UseMySql(connectionString, serverVersion));
+builder.Services.AddDbContext<AppDbContext>(options => options.UseMySql(connectionString, serverVersion));
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
+if (app.Environment.IsDevelopment()) {
     app.UseDeveloperExceptionPage();
 }
 

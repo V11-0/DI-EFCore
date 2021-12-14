@@ -1,8 +1,17 @@
 {
     "workbench.colorCustomizations": {
-        "activityBar.background": "#25302E",
-        "titleBar.activeBackground": "#334340",
-        "titleBar.activeForeground": "#F9FAFA"
+        "activityBar.background": "#000000",
+        "activityBar.foreground": "#97E673",
+        "activityBar.inactiveForeground": "#304A00",
+        "activityBarBadge.foreground": "#000000",
+        "activityBarBadge.background": "#42DD88",
+        "statusBar.foreground": "#96FFE2",
+        "statusBar.background": "#0E8061",
+        "statusBarItem.hoverBackground": "#1A545D",
+        "statusBarItem.remoteForeground": "#D0E8FF",
+        "statusBarItem.remoteBackground": "#29669F",
+        "statusBar.debuggingForeground": "#000000",
+        "statusBar.debuggingBackground": "#45B797"
     },
 
     "dotnet-test-explorer.testProjectPath": "**/*Tests.@(csproj|vbproj|fsproj)"

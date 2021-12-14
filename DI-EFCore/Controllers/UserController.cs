@@ -1,110 +1,54 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 using DI_EFCore.Entities;
-using DI_EFCore.Models;
+using DI_EFCore.Interfaces.Repositories;
 
-namespace DI_EFCore.Controllers
-{
+namespace DI_EFCore.Controllers {
     [Route("api/[controller]")]
     [ApiController]
-    public class UserController : ControllerBase
-    {
-        private readonly AppDbContext _context;
+    public class UserController : ControllerBase {
+        private readonly IUserRepository _repository;
 
-        public UserController(AppDbContext context)
-        {
-            _context = context;
+        public UserController(IUserRepository repository) {
+            _repository = repository;
         }
 
         // GET: api/User
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<User>>> GetUsers()
-        {
-            return await _context.Users.ToListAsync();
+        public async Task<ActionResult<IEnumerable<User>>> GetAllUsers() {
+            return Ok(await _repository.GetAllUsers());
         }
 
         // GET: api/User/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<User>> GetUser(int id)
-        {
-            var user = await _context.Users.FindAsync(id);
+        public async Task<ActionResult<User?>> GetUser(int id) {
+            var user = await _repository.GetUser(id);
 
-            if (user == null)
-            {
-                return NotFound();
+            if (user != null) {
+                return Ok(user);
             }
 
-            return user;
-        }
-
-        // PUT: api/User/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutUser(int id, User user)
-        {
-            if (id != user.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(user).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!UserExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
+            return NotFound();
         }
 
         // POST: api/User
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<User>> PostUser(User user)
-        {
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync();
+        public async Task<ActionResult<User>> PostUser(User user) {
+            var createdUser = await _repository.AddUser(user);
 
-            return CreatedAtAction("GetUser", new { id = user.Id }, user);
+            return CreatedAtAction(nameof(GetUser), new { id = createdUser.Id }, createdUser);
         }
 
-        // DELETE: api/User/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteUser(int id)
-        {
-            var user = await _context.Users.FindAsync(id);
-            if (user == null)
-            {
-                return NotFound();
+        public async Task<ActionResult> DeleteUser(int id) {
+            var user = await _repository.GetUser(id);
+
+            if (user != null) {
+                await _repository.DeleteUser(id);
+                return NoContent();
             }
 
-            _context.Users.Remove(user);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
-        }
-
-        private bool UserExists(int id)
-        {
-            return _context.Users.Any(e => e.Id == id);
+            return NotFound();
         }
     }
 }
