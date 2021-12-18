@@ -5,8 +5,7 @@ namespace DI_EFCore.Entities {
 
     public class Entity {
 
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
     }
 };
