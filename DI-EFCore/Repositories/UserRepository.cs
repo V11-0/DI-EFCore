@@ -28,13 +28,9 @@ namespace DI_EFCore.Repositories {
             return user;
         }
 
-        public async Task DeleteUser(int id) {
-            var user = await _context.Users.FindAsync(id);
-
-            if (user != null) {
-                _context.Remove(user);
-                await _context.SaveChangesAsync();
-            }
+        public async Task DeleteUser(User user) {
+            _context.Remove(user);
+            await _context.SaveChangesAsync();
         }
     }
 }

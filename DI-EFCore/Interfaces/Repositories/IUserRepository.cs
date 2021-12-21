@@ -5,6 +5,6 @@ namespace DI_EFCore.Interfaces.Repositories {
         Task<List<User>> GetAllUsers();
         Task<User?> GetUser(int id);
         Task<User> AddUser(User user);
-        Task DeleteUser(int id);
+        Task DeleteUser(User user);
     }
 }

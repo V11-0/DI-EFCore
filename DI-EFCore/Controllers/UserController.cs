@@ -44,7 +44,7 @@ namespace DI_EFCore.Controllers {
             var user = await _repository.GetUser(id);
 
             if (user != null) {
-                await _repository.DeleteUser(id);
+                await _repository.DeleteUser(user);
                 return NoContent();
             }
 
