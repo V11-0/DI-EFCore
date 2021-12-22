@@ -5,13 +5,13 @@
         "activityBar.inactiveForeground": "#304A00",
         "activityBarBadge.foreground": "#000000",
         "activityBarBadge.background": "#42DD88",
-        "statusBar.foreground": "#96FFE2",
-        "statusBar.background": "#0E8061",
-        "statusBarItem.hoverBackground": "#1A545D",
-        "statusBarItem.remoteForeground": "#D0E8FF",
-        "statusBarItem.remoteBackground": "#29669F",
-        "statusBar.debuggingForeground": "#000000",
-        "statusBar.debuggingBackground": "#45B797"
+        "statusBar.foreground": "#E4EAFF",
+        "statusBar.background": "#3D59AE",
+        "statusBarItem.hoverBackground": "#44397D",
+        "statusBarItem.remoteForeground": "#F9F3FF",
+        "statusBarItem.remoteBackground": "#783BB1",
+        "statusBar.debuggingForeground": "#000D33",
+        "statusBar.debuggingBackground": "#7490E5"
     },
 
     "dotnet-test-explorer.testProjectPath": "**/*Tests.@(csproj|vbproj|fsproj)"
