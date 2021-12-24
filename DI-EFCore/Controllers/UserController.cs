@@ -34,6 +34,11 @@ namespace DI_EFCore.Controllers {
         // POST: api/User
         [HttpPost]
         public async Task<ActionResult<User>> PostUser(User user) {
+
+            if (user.Username == "") {
+                return BadRequest("Username can not be empty");
+            }
+
             var createdUser = await _repository.AddUser(user);
 
             return CreatedAtAction(nameof(GetUser), new { id = createdUser.Id }, createdUser);

@@ -4,25 +4,29 @@ using System.Threading.Tasks;
 using DI_EFCore.Entities;
 using DI_EFCore.Interfaces.Repositories;
 
-namespace DI_EFCore.Tests.Mocks
+namespace DI_EFCore.Tests.Repositories
 {
-    public class UserRepositoryMock : IUserRepository {
+    public class FakeUserRepository : IUserRepository {
 
         List<User> users = new List<User>();
 
-        public UserRepositoryMock() {
-            User user1 = new User("V11");
-            user1.Id = 1;
+        public FakeUserRepository() {
+            User user1 = new User("Name1");
+            user1.Id = 0;
 
-            User user2 = new User("She");
-            user2.Id = 2;
+            User user2 = new User("Name2");
+            user2.Id = 1;
 
             users.Add(user1);
             users.Add(user2);
         }
 
-        public Task<User> AddUser(User user) {
-            throw new System.NotImplementedException();
+        public async Task<User> AddUser(User user) {
+            await Task.Delay(0);
+
+            users.Add(user);
+
+            return user;
         }
 
         public async Task<User?> GetUser(int id) {
@@ -30,8 +34,9 @@ namespace DI_EFCore.Tests.Mocks
             return users.Where(u => u.Id == id).SingleOrDefault();
         }
 
-        public Task DeleteUser(User user) {
-            throw new System.NotImplementedException();
+        public async Task DeleteUser(User user) {
+            await Task.Delay(0);
+            users.Remove(user);
         }
 
         public Task<List<User>> GetAllUsers() {

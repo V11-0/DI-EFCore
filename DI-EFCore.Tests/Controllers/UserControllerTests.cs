@@ -2,7 +2,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.AspNetCore.Mvc;
 
 using DI_EFCore.Controllers;
-using DI_EFCore.Tests.Mocks;
+using DI_EFCore.Tests.Repositories;
 using System.Threading.Tasks;
 using DI_EFCore.Entities;
 
@@ -13,26 +13,61 @@ public class UserControllerTests {
     private UserController _controller;
 
     public UserControllerTests() {
-        _controller = new UserController(new UserRepositoryMock());
+        _controller = new UserController(new FakeUserRepository());
     }
 
     [TestMethod]
-    public async Task GetUserSuccess() {
-        var actionResult = await _controller.GetUser(1);
+    [DataRow(0)]
+    public async Task GetUser_ValidId_ReturnsUser(int userId) {
+        var actionResult = (await _controller.GetUser(userId)).Result;
+        Assert.IsTrue(actionResult is OkObjectResult);
 
-        Assert.IsTrue(actionResult.Result is OkObjectResult);
+        var okResult = actionResult as OkObjectResult;
+        Assert.IsNotNull(okResult);
 
-        var okResult = actionResult.Result as OkObjectResult;
-        var user = okResult.Value as User;
-
-        Assert.IsNotNull(user);
-        Assert.AreEqual("V11", user.Username);
+        var expectedUser = okResult.Value as User;
+        Assert.IsNotNull(expectedUser);
     }
 
     [TestMethod]
-    public async Task GetUserNotFound() {
-        var actionResult = await _controller.GetUser(5);
+    [DataRow(10)]
+    public async Task GetUser_NonExistentId_ReturnsNotFound(int userId) {
+        var actionResult = (await _controller.GetUser(userId)).Result;
 
-        Assert.IsTrue(actionResult.Result is NotFoundResult);
+        Assert.IsTrue(actionResult is NotFoundResult);
+    }
+
+    [TestMethod]
+    public async Task PostUser_EmptyUsername_ReturnsBadRequest() {
+        var invalidUser = new User("");
+
+        var actionResult = (await _controller.PostUser(invalidUser)).Result;
+
+        Assert.IsTrue(actionResult is BadRequestObjectResult);
+    }
+
+    [TestMethod]
+    public async Task PostUser_ValidUser_ReturnsCreated() {
+        var validUser = new User("Aname");
+
+        var actionResult = (await _controller.PostUser(validUser)).Result;
+
+        Assert.IsTrue(actionResult is CreatedAtActionResult);
+    }
+
+    [TestMethod]
+    [DataRow(0)]
+    public async Task DeleteUser_ValidId_ReturnsNoContent(int userId) {
+        var actionResult = (await _controller.DeleteUser(userId));
+
+        Assert.IsTrue(actionResult is NoContentResult);
+    }
+
+    [TestMethod]
+    [DataRow(10)]
+    public async Task DeleteUser_NonExistingId_ReturnsNotFound(int userId) {
+        var actionResult = (await _controller.DeleteUser(userId));
+
+        Assert.IsTrue(actionResult is NotFoundResult);
     }
 }
