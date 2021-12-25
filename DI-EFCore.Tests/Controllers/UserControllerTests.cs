@@ -18,6 +18,7 @@ public class UserControllerTests {
 
     [TestMethod]
     [DataRow(0)]
+    [DataRow(1)]
     public async Task GetUser_ValidId_ReturnsUser(int userId) {
         var actionResult = (await _controller.GetUser(userId)).Result;
         Assert.IsTrue(actionResult is OkObjectResult);
@@ -31,6 +32,7 @@ public class UserControllerTests {
 
     [TestMethod]
     [DataRow(10)]
+    [DataRow(20)]
     public async Task GetUser_NonExistentId_ReturnsNotFound(int userId) {
         var actionResult = (await _controller.GetUser(userId)).Result;
 
@@ -57,6 +59,7 @@ public class UserControllerTests {
 
     [TestMethod]
     [DataRow(0)]
+    [DataRow(1)]
     public async Task DeleteUser_ValidId_ReturnsNoContent(int userId) {
         var actionResult = (await _controller.DeleteUser(userId));
 
@@ -65,6 +68,7 @@ public class UserControllerTests {
 
     [TestMethod]
     [DataRow(10)]
+    [DataRow(20)]
     public async Task DeleteUser_NonExistingId_ReturnsNotFound(int userId) {
         var actionResult = (await _controller.DeleteUser(userId));
 
