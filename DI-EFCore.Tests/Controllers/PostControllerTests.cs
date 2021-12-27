@@ -124,6 +124,52 @@ namespace DI_EFCore.Tests.Controllers {
             Assert.IsInstanceOfType(actionResult, typeof(NotFoundResult));
         }
 
-        // TODO: Create AddComment Tests
+        [TestMethod]
+        public async Task AddComment_InvalidUserId_ReturnsBadRequestObject() {
+            var invalidComment = new Comment() {
+                AuthorId = 10, // Nonexistent UserId
+                CommentContent = "Comment Example",
+                PostId = 1
+            };
+
+            var actionResult = (await _controller.PostComment(invalidComment)).Result;
+            Assert.IsInstanceOfType(actionResult, typeof(BadRequestObjectResult));
+        }
+
+        [TestMethod]
+        public async Task AddComment_InvalidPostId_ReturnsBadRequestObject() {
+            var invalidComment = new Comment() {
+                AuthorId = 1,
+                CommentContent = "Comment Example",
+                PostId = 10 // Nonexistent postId
+            };
+
+            var actionResult = (await _controller.PostComment(invalidComment)).Result;
+            Assert.IsInstanceOfType(actionResult, typeof(BadRequestObjectResult));
+        }
+
+        [TestMethod]
+        public async Task AddComment_InvalidPostAndUserId_ReturnsBadRequestObject() {
+            var invalidComment = new Comment() {
+                AuthorId = 10, // Nonexistent UserId
+                CommentContent = "Comment Example",
+                PostId = 10 // Nonexistent PostId
+            };
+
+            var actionResult = (await _controller.PostComment(invalidComment)).Result;
+            Assert.IsInstanceOfType(actionResult, typeof(BadRequestObjectResult));
+        }
+
+        [TestMethod]
+        public async Task AddComment_ValidComment_ReturnsOkObject() {
+            var invalidComment = new Comment() {
+                AuthorId = 1,
+                CommentContent = "Comment Example",
+                PostId = 1
+            };
+
+            var actionResult = (await _controller.PostComment(invalidComment)).Result;
+            Assert.IsInstanceOfType(actionResult, typeof(OkObjectResult));
+        }
     }
 }

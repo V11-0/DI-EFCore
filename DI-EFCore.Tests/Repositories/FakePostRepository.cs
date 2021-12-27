@@ -38,9 +38,10 @@ namespace DI_EFCore.Tests.Repositories
             int postId = comment.PostId;
 
             var post = posts.Where(p => p.Id == postId).SingleOrDefault();
+            var validUsers = posts.Select(p => p.AuthorId).ToArray();
 
             // Simulate post or author not found
-            if (post == null || (post.AuthorId != 0 && post.AuthorId != 1)) {
+            if (post == null || (!validUsers.Contains(comment.AuthorId))) {
                 throw new ArgumentException();
             }
 
