@@ -1,12 +1,14 @@
 using Microsoft.AspNetCore.Mvc;
 
 using DI_EFCore.Entities;
-using DI_EFCore.Interfaces.Repositories;
+using DI_EFCore.Repositories.Interfaces;
 
 namespace DI_EFCore.Controllers {
+
     [Route("api/[controller]")]
     [ApiController]
     public class UserController : ControllerBase {
+
         private readonly IUserRepository _repository;
 
         public UserController(IUserRepository repository) {

@@ -2,8 +2,8 @@ using Microsoft.EntityFrameworkCore;
 
 using DI_EFCore.Models;
 
-using DI_EFCore.Interfaces.Repositories;
 using DI_EFCore.Repositories;
+using DI_EFCore.Repositories.Interfaces;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);

@@ -1,8 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+
 using DI_EFCore.Entities;
-using DI_EFCore.Interfaces.Repositories;
+using DI_EFCore.Repositories.Interfaces;
 
 namespace DI_EFCore.Tests.Repositories
 {
@@ -21,26 +22,23 @@ namespace DI_EFCore.Tests.Repositories
             users.Add(user2);
         }
 
-        public async Task<User> AddUser(User user) {
-            await Task.Delay(0);
-
+        public Task<User> AddUser(User user) {
             users.Add(user);
-
-            return user;
+            return Task.FromResult(user);
         }
 
-        public async Task<User?> GetUser(int id) {
-            await Task.Delay(0);
-            return users.Where(u => u.Id == id).SingleOrDefault();
+        public Task<User?> GetUser(int id) {
+            var user = users.Where(u => u.Id == id).SingleOrDefault();
+            return Task.FromResult(user);
         }
 
-        public async Task DeleteUser(User user) {
-            await Task.Delay(0);
+        public Task DeleteUser(User user) {
             users.Remove(user);
+            return Task.CompletedTask;
         }
 
-        public Task<List<User>> GetAllUsers() {
-            throw new System.NotImplementedException();
+        public Task<IEnumerable<User>> GetAllUsers() {
+            return Task.FromResult(users.AsEnumerable());
         }
     }
 }

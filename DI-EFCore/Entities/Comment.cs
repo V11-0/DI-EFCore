@@ -1,7 +1,6 @@
-namespace DI_EFCore.Entities
-{
-    public class Comment : Entity
-    {
+namespace DI_EFCore.Entities {
+    public class Comment : Entity {
+
         public string CommentContent { get; set; } = null!;
 
         public int AuthorId { get; set; }

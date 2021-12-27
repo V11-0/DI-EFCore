@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 
 using DI_EFCore.Entities;
-using DI_EFCore.Interfaces.Repositories;
+using DI_EFCore.Repositories.Interfaces;
 
 namespace DI_EFCore.Controllers {
 
@@ -33,17 +33,16 @@ namespace DI_EFCore.Controllers {
 
         [HttpPost]
         public async Task<ActionResult<Post>> AddPost(Post post) {
-            var createdPost = await _repository.AddPost(post);
-
-            if (createdPost != null) {
+            try {
+                var createdPost = await _repository.AddPost(post);
                 return CreatedAtAction(nameof(GetPost), new { id = createdPost.Id }, createdPost);
+            } catch (ArgumentException e) {
+                return BadRequest(e.Message);
             }
-
-            return BadRequest();
         }
 
-        [HttpPut("{id}")]
-        public async Task<ActionResult<Post>> UpdatePost(Post post) {
+        [HttpPut]
+        public async Task<ActionResult> UpdatePost(Post post) {
 
             if (await _repository.GetPost(post.Id) != null) {
                 await _repository.UpdatePost(post);
@@ -66,14 +65,13 @@ namespace DI_EFCore.Controllers {
         }
 
         [HttpPost("Comment")]
-        public async Task<ActionResult<Comment?>> PostComment(Comment comment) {
-            var comm = await _repository.AddComment(comment);
-
-            if (comm != null) {
+        public async Task<ActionResult<Comment>> PostComment(Comment comment) {
+            try {
+                var comm = await _repository.AddComment(comment);
                 return Ok(comm);
+            } catch (ArgumentException e) {
+                return BadRequest(e.Message);
             }
-
-            return NotFound();
         }
     }
 }

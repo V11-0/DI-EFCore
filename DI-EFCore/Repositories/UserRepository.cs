@@ -1,7 +1,8 @@
-using DI_EFCore.Entities;
-using DI_EFCore.Interfaces.Repositories;
-using DI_EFCore.Models;
 using Microsoft.EntityFrameworkCore;
+
+using DI_EFCore.Entities;
+using DI_EFCore.Repositories.Interfaces;
+using DI_EFCore.Models;
 
 namespace DI_EFCore.Repositories {
 
@@ -13,8 +14,8 @@ namespace DI_EFCore.Repositories {
             _context = context;
         }
 
-        public async Task<List<User>> GetAllUsers() {
-            return await _context.Users.ToListAsync();
+        public async Task<IEnumerable<User>> GetAllUsers() {
+            return await _context.Users.ToArrayAsync();
         }
 
         public async Task<User?> GetUser(int id) {
