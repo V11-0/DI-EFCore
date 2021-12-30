@@ -5,7 +5,7 @@ namespace DI_EFCore.Entities {
         public string PostContent { get; set; } = null!;
 
         public int AuthorId { get; set; }
-        public User? Author { get; set; } = null!;
+        public virtual User? Author { get; set; } = null!;
         public virtual ICollection<Comment>? Comments { get; set; }
     }
 }
