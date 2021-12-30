@@ -1,11 +1,11 @@
 using System.Threading.Tasks;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using DI_EFCore.Controllers;
-using DI_EFCore.Tests.Repositories;
 using DI_EFCore.Entities;
+using DI_EFCore.Tests.Repositories.Mocks;
 
 namespace DI_EFCore.Tests.Controllers {
 

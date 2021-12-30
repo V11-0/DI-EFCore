@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using DI_EFCore.Entities;
 using DI_EFCore.Repositories.Interfaces;
 
-namespace DI_EFCore.Tests.Repositories
+namespace DI_EFCore.Tests.Repositories.Mocks
 {
 
     public class FakePostRepository : IPostRepository {
