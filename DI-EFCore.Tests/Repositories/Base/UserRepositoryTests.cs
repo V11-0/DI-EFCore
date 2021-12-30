@@ -17,8 +17,11 @@ namespace DI_EFCore.Tests.Repositories.Base
     public abstract class UserRepositoryTests {
 
         private readonly UserRepository _repository;
+        public readonly DbContextOptions<AppDbContext> _contextOptions;
 
         protected UserRepositoryTests(DbContextOptions<AppDbContext> contextOptions) {
+            _contextOptions = contextOptions;
+
             var context = new AppDbContext(contextOptions);
             _repository = new UserRepository(context);
 
