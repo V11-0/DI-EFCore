@@ -42,8 +42,18 @@ namespace DI_EFCore.Repositories {
 
         public async Task UpdatePost(Post post) {
 
-            var entry = _context.Entry(post);
-            entry.State = EntityState.Modified;
+            var dbPost = await _context.Posts.FindAsync(post.Id);
+
+            if (dbPost == null) {
+                throw new KeyNotFoundException("Post doesn't exist");
+            }
+
+            if (dbPost.AuthorId != post.AuthorId) {
+                throw new InvalidOperationException("The Post's Author cannot change");
+            }
+
+            dbPost.Comments = post.Comments;
+            dbPost.PostContent = post.PostContent;
 
             await _context.SaveChangesAsync();
         }

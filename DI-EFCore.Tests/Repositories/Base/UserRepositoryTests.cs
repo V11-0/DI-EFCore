@@ -16,21 +16,22 @@ namespace DI_EFCore.Tests.Repositories.Base
 
     public abstract class UserRepositoryTests {
 
-        private readonly UserRepository _repository;
         public readonly DbContextOptions<AppDbContext> _contextOptions;
 
         protected UserRepositoryTests(DbContextOptions<AppDbContext> contextOptions) {
             _contextOptions = contextOptions;
 
             var context = new AppDbContext(contextOptions);
-            _repository = new UserRepository(context);
-
             DataSeed.Seed(context);
+        }
+
+        private UserRepository _repository() {
+            return new UserRepository(new AppDbContext(_contextOptions));
         }
 
         [TestMethod]
         public async Task GetAllUsers_ReturnsUsersEnumerable() {
-            var users = await _repository.GetAllUsers();
+            var users = await _repository().GetAllUsers();
             Assert.IsInstanceOfType(users, typeof(IEnumerable<User>));
 
             var userCount = users.Count();
@@ -40,7 +41,7 @@ namespace DI_EFCore.Tests.Repositories.Base
         [TestMethod]
         [DataRow(1)]
         public async Task GetUser_ValidId_ReturnsUser(int userId) {
-            var user = await _repository.GetUser(userId);
+            var user = await _repository().GetUser(userId);
 
             Assert.IsNotNull(user);
             Assert.IsInstanceOfType(user, typeof(User));
@@ -49,7 +50,7 @@ namespace DI_EFCore.Tests.Repositories.Base
         [TestMethod]
         [DataRow(100)]
         public async Task GetUser_NonexistentId_ReturnsNull(int userId) {
-            var user = await _repository.GetUser(userId);
+            var user = await _repository().GetUser(userId);
 
             Assert.IsNull(user);
         }
@@ -57,7 +58,7 @@ namespace DI_EFCore.Tests.Repositories.Base
         [TestMethod]
         public async Task AddUser_CheckCreatedId() {
             var user = new User("Name");
-            await _repository.AddUser(user);
+            await _repository().AddUser(user);
 
             var createdId = user.Id;
 
@@ -67,12 +68,14 @@ namespace DI_EFCore.Tests.Repositories.Base
         [TestMethod]
         [DataRow(1)]
         public async Task DeleteUser_CheckNull(int userId) {
-            var existentUser = await _repository.GetUser(userId);
+            var repo = _repository();
+
+            var existentUser = await repo.GetUser(userId);
             Assert.IsNotNull(existentUser);
 
-            await _repository.DeleteUser(existentUser);
+            await repo.DeleteUser(existentUser);
 
-            var nonExistingUser = await _repository.GetUser(userId);
+            var nonExistingUser = await repo.GetUser(userId);
             Assert.IsNull(nonExistingUser);
         }
     }

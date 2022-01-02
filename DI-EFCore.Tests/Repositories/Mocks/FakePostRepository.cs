@@ -75,6 +75,16 @@ namespace DI_EFCore.Tests.Repositories.Mocks
         }
 
         public Task UpdatePost(Post post) {
+            var current = GetPost(post.Id).Result;
+
+            if (current == null) {
+                throw new KeyNotFoundException("Post doesn't exist");
+            }
+
+            if (current.AuthorId != post.AuthorId) {
+                throw new InvalidOperationException("The Post's Author cannot change");
+            }
+
             return Task.CompletedTask;
         }
     }

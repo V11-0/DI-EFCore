@@ -43,13 +43,15 @@ namespace DI_EFCore.Controllers {
 
         [HttpPut]
         public async Task<ActionResult> UpdatePost(Post post) {
-
-            if (await _repository.GetPost(post.Id) != null) {
+            try {
                 await _repository.UpdatePost(post);
                 return NoContent();
-            }
 
-            return NotFound();
+            } catch (KeyNotFoundException) {
+                return NotFound();
+            } catch (InvalidOperationException) {
+                return BadRequest();
+            }
         }
 
         [HttpDelete("{id}")]

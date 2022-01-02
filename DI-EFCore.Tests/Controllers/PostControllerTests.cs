@@ -108,6 +108,20 @@ namespace DI_EFCore.Tests.Controllers {
         }
 
         [TestMethod]
+        public async Task UpdatePost_InvalidAuthorChange_ReturnsBadRequest() {
+
+            var invalidPostUpdate = new Post() {
+                Id = 1,
+                PostContent = "Updated!",
+                AuthorId = 10
+            };
+
+            var actionResult = await _controller.UpdatePost(invalidPostUpdate);
+
+            Assert.IsInstanceOfType(actionResult, typeof(BadRequestResult));
+        }
+
+        [TestMethod]
         [DataRow(0)]
         public async Task DeletePost_ValidId_ReturnsNoContent(int postId) {
 
