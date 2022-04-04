@@ -15,13 +15,19 @@ namespace DI_EFCore.Controllers {
             _repository = repository;
         }
 
-        // GET: api/User
+        /// <summary>Get All Users in Database</summary>
+        /// <returns>A List of users</returns>
+        /// <response code="200">Returns the list of users</response>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<User>>> GetAllUsers() {
             return Ok(await _repository.GetAllUsers());
         }
 
-        // GET: api/User/5
+        /// <summary>Get All Users in Database</summary>
+        /// <param name="id"></param>
+        /// <returns>A user</returns>
+        /// <response code="200">Returns the specified user</response>
+        /// <response code="404">If the user is not found</response>
         [HttpGet("{id}")]
         public async Task<ActionResult<User?>> GetUser(int id) {
             var user = await _repository.GetUser(id);
